@@ -31,6 +31,5 @@ urlpatterns = [
     path('', include('wiki.urls')),
     
     # Accounts App
-    path('accounts/', include('accounts.urls'))
-    
+    path('accounts/', include('accounts.urls'))   
 ]

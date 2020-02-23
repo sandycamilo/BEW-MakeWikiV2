@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 
 from wiki.models import Page
-
+from wiki.forms import PageCreateForm
+from django import forms
 
 class PageListView(ListView):
     """ Renders a list of all Pages. """
@@ -27,3 +31,14 @@ class PageDetailView(DetailView):
           'page': page
         })
 
+class PageCreateView(CreateView):
+  def get(self, request, *args, **kwargs):
+    context = {'form': PageCreateForm()}
+    return render(request, 'templates/new.html', context)
+
+  def post(self, request, *args, **kwargs):
+    form = PageCreateForm(request.POST)
+    if form.is_valid():
+      form = form.save()
+      return HttpResponseRedirect(reverse_lazy('forms:detail', args=[form.id]))
+    return render(request, 'templates/new.html', {'form': form})
