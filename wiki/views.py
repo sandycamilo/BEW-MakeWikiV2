@@ -34,11 +34,11 @@ class PageDetailView(DetailView):
 class PageCreateView(CreateView):
   def get(self, request, *args, **kwargs):
     context = {'form': PageCreateForm()}
-    return render(request, 'templates/new.html', context)
+    return render(request, 'new.html', context)
 
   def post(self, request, *args, **kwargs):
     form = PageCreateForm(request.POST)
     if form.is_valid():
       form = form.save()
       return HttpResponseRedirect(reverse_lazy('forms:detail', args=[form.id]))
-    return render(request, 'templates/new.html', {'form': form})
+    return render(request, 'new.html', {'form': form})
